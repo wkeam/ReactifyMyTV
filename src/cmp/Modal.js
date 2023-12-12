@@ -1,3 +1,4 @@
+import React from "react";
 import Time from './Time.jsx';
 
 function Modal({channel, prechannel}){

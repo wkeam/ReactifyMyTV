@@ -21,6 +21,16 @@ ReactifyMyTV includes channels from various sources, providing a diverse range o
 - **Plex Channels:** Access channels available on Plex for additional content.
 - **PlutoTV Channels:** Explore channels from PlutoTV to broaden your entertainment options.
 
+## Controls
+**Mouse**
+- Click a channel icon to change channel.
+- Mouse wheel to scroll the EPG or use the scrollbar handles.
+- Double click video to enter/exit fullscreen.
+
+**Keyboard**
+- Arrow Up/Arrow Down browse the EPG.
+- Enter to change channel.
+- Page Up/Page Down scroll the EPG several lines
 
 ## Getting Started
 

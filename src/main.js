@@ -51,7 +51,7 @@ async function createWindow(settings) {
 
     
 
-    //win.removeMenu();
+    win.removeMenu();
 
     // Open the DevTools.
     // if (isDev) {
