@@ -121,8 +121,10 @@ app.on('ready', () => {
           const fileContents = fs.readFileSync(filePath, 'utf-8');
           return JSON.parse(fileContents);
       } catch (error) {
-          console.error(`Error reading file ${filePath}: ${error.message}`);
-          return null;
+          let settingsData = {
+            lastSync : Date.now()-1000
+          };
+          return settingsData;
       }
   };
 
