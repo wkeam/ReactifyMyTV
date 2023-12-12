@@ -33,15 +33,19 @@ Follow these instructions to get the app up and running on your local machine.
 ### Installation
 
 1. Clone the repository:
-   git clone https://github.com/wkeam/ReactifyMyTV.git
+
+   > git clone https://github.com/wkeam/ReactifyMyTV.git
    
-2. Navigate to the project directory:
-   cd ReactifyMyTV
+3. Navigate to the project directory:
 
-3. Install dependencies:
-   npm install
+   > cd ReactifyMyTV
 
-4. Package the application
-   npm run package
+4. Install dependencies:
 
-Run the application ./out/ folder
+   > npm install
+
+5. Package the application:
+   
+   > npm run package
+
+Run the application from the ./out/ folder
