@@ -27,10 +27,21 @@ const Mainpage = () => {
     // Calculate the scroll position based on the index of the selected channel
     const channelIndex = channels.findIndex(c => c.index === playerState.highlightedChannel.index);
     const channelHeight = 80;
+
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+    const hourWidth = 14400 / 24;
+    const minuteWidth = hourWidth / 60;
+
     if (layoutRef.current && channelIndex !== -1 && channelHeight) {
       const containerHeight = layoutRef.current.clientHeight;
-      const scrollPosition = channelIndex * channelHeight - (containerHeight / 2) + (channelHeight / 2) + 40;
-      layoutRef.current.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+      const scrollPositionY = channelIndex * channelHeight - (containerHeight / 2) + (channelHeight / 2) + 40;
+
+      // Calculate the horizontal scroll position based on the current time
+      const scrollPositionX = (currentHour * hourWidth) + (currentMinute * minuteWidth) - (layoutRef.current.clientWidth / 2);
+      
+      layoutRef.current.scrollTo({ top: scrollPositionY, left: scrollPositionX, behavior: 'smooth' });
     }
   }, [playerState.highlightedChannel, channels]);
 
