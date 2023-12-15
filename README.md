@@ -3,6 +3,8 @@
 
 ![image](https://github.com/wkeam/ReactifyMyTV/assets/71179073/c28edac6-5475-4a2e-83ea-ef3acf6d03bf)
 
+![image](https://github.com/wkeam/ReactifyMyTV/assets/71179073/14d3b119-d3b7-4c64-9205-9c96014ea849)
+
 
 ReactifyMyTV is an Electron application built with React that enhances your TV viewing experience by providing an interactive Electronic Program Guide (EPG) for TV channels. This application includes a wide range of Australian channels, along with channels from Plex and PlutoTV.
 
