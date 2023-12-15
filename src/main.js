@@ -122,7 +122,7 @@ app.on('ready', () => {
           return JSON.parse(fileContents);
       } catch (error) {
           let settingsData = {
-            lastSync : Date.now()-1000
+            lastSync : Date.now()-9000000000000
           };
           return settingsData;
       }
