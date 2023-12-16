@@ -76,7 +76,7 @@ async function fetchData() {
                 }
                 
                 // Write the file
-                fs.writeFileSync(filePathWrite, 'export const epg = ' + JSON.stringify(convertedJSON));
+                fs.writeFileSync(filePathWrite, JSON.stringify(convertedJSON, null, 2));
                 
                 console.log(`File saved to: ${filePathWrite}`);
               } catch (error) {
@@ -130,7 +130,7 @@ async function fetchData() {
         }
         
         // Write the file
-        fs.writeFileSync(filePathWrite, 'export const channels = ' + JSON.stringify(mappedJson));
+        fs.writeFileSync(filePathWrite, JSON.stringify(mappedJson, null, 2));
         
         console.log(`File saved to: ${filePathWrite}`);
         
@@ -175,36 +175,51 @@ const parseM3U8 = (content) => {
 
   for (const line of lines) {
     if (line.startsWith('#EXTINF')) {
-      let match;
-
-      // Try the first pattern
-      match = line.match(/#EXTINF:-1\s+channel-id="([^"]+)"\s+tvg-id="([^"]+)"\s+tvg-logo="([^"]+)"\s+group-title="([^"]+)"\s*,\s+([^[\n]+)/);
-
-      // Try the second pattern if the first one fails
-      if (!match) {
-        match = line.match(/#EXTINF:-1\s*channel-id="([^"]*)"\s*tvg-id="([^"]*)"\s*tvg-logo="([^"]*)"\s*tvg-chno="(\d+)"\s*group-title="([^"]*)"\s*,\s*(.*)$/);
-      }
-
-      // Try the third pattern if the second one fails
-      if (!match) {
-        match = line.match(/#EXTINF:-1\s+channel-id="([^"]+)"\s+tvg-id="([^"]+)"\s+tvg-logo="([^"]+)"\s*,\s+([^,]+)/);
-      }
-
+      // Extract information from the #EXTINF line
+      const match = line.match(/#EXTINF:-1\s+channel-id="([^"]+)"\s+tvg-id="([^"]+)"\s+tvg-logo="([^"]+)"\s+group-title="([^"]+)"\s*,\s+([^[\n]+)/);
       if (match) {
-        const [, channelID, tvgID, tvgLogo, tvgChNo, groupTitle, channelName] = match;
+        const [, channelID, tvgID, tvgLogo, groupTitle, channelName] = match;
         currentPlaylist = {
           channelID,
           tvgID,
           tvgLogo,
-          tvgChNo,
           groupTitle,
           channelName,
         };
       } else {
-        console.log('no match');
-        console.log(line);
+        const pattern = /#EXTINF:-1\s*channel-id="([^"]*)"\s*tvg-id="([^"]*)"\s*tvg-logo="([^"]*)"\s*tvg-chno="(\d+)"\s*group-title="([^"]*)"\s*,\s*(.*)$/;
+
+        const match2 = line.match(pattern);
+        if (match2) {
+          const [, channelID, tvgID, tvgLogo, tvgChNo, groupTitle, channelName] = match2;
+          currentPlaylist = {
+            channelID,
+            tvgID,
+            tvgLogo,
+            tvgChNo,
+            groupTitle,
+            channelName,
+          }
+        } else {
+
+          const pattern2 = /#EXTINF:-1\s+channel-id="([^"]+)"\s+tvg-id="([^"]+)"\s+tvg-logo="([^"]+)"\s*,\s+([^,]+)/;
+          const match3 = line.match(pattern2);
+          if (match3) {
+            const [, channelID, tvgID, tvgLogo, channelName] = match3;
+            currentPlaylist = {
+              channelID,
+              tvgID,
+              tvgLogo,
+              channelName,
+            }
+            
+          } else {
+            console.log('no match: ' + line);
+          }
+        }
       }
     } else if (line.startsWith('https://')) {
+      // If it's a URL line, add it to the current playlist
       if (currentPlaylist) {
         currentPlaylist.channelURL = line.trim();
         playlists.push(currentPlaylist);

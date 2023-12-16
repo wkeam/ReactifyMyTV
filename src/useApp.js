@@ -1,11 +1,12 @@
 import React from "react";
-
-import { fetchChannels, fetchEpg } from "./helpers";
+const { invoke } = window.electron;
+//import { fetchChannels, fetchEpg } from "./helpers";
 
 import { useEpg } from "planby";
 
 // Import theme
 import { theme } from "./helpers/theme";
+
 
 export function useApp() {
   const [channels, setChannels] = React.useState([]);
@@ -44,8 +45,10 @@ export function useApp() {
 
   const handleFetchResources = React.useCallback(async () => {
     setIsLoading(true);
-    const epg = await fetchEpg();
-    const channels = await fetchChannels();
+    // const epg = await fetchEpg();
+    // const channels = await fetchChannels();
+    const { channels, epg } = await invoke('get-data');
+    console.log('channels',channels);
     setEpg(epg);
     setChannels(channels);
     setPlayerState({highlightedChannel:channels[0],playingChannel: channels[0]});
