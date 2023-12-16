@@ -1,6 +1,5 @@
 import React from "react";
 const { invoke } = window.electron;
-//import { fetchChannels, fetchEpg } from "./helpers";
 
 import { useEpg } from "planby";
 
@@ -45,8 +44,6 @@ export function useApp() {
 
   const handleFetchResources = React.useCallback(async () => {
     setIsLoading(true);
-    // const epg = await fetchEpg();
-    // const channels = await fetchChannels();
     const { channels, epg } = await invoke('get-data');
     console.log('channels',channels);
     setEpg(epg);
