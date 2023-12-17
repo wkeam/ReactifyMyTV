@@ -18,8 +18,7 @@ async function createWindow(settings) {
     const timeDifference = currentDate.getTime() - dateFromTimestamp.getTime();
     const daysDifference = timeDifference / (1000 * 60 * 60 * 24);
     console.log('daysDifference: ' + daysDifference);
-    // Set the desired interval (e.g., every 2 days)
-    const intervalDays = 0.5;
+    const intervalDays = 0.1;
 
     // Check if the specified interval has passed
     if (daysDifference >= intervalDays) {
@@ -71,7 +70,6 @@ ipcMain.handle('get-data', async () => {
 
     const channels = await fs.readFileSync(channelsPath, 'utf-8');
     const epg = await fs.readFileSync(epgPath, 'utf-8');
-    console.log(channels);
     return { channels : JSON.parse(channels), epg : JSON.parse(epg) };
   } catch (error) {
     console.error('Error reading files:', error);

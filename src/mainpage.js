@@ -6,7 +6,7 @@ import Player from './cmp/Player';
 import { Epg, Layout } from "planby";
 import { useApp } from "./useApp";
 import { Timeline, ChannelItem, ProgramItem } from "./components";
-import { useHotkeys } from 'react-hotkeys-hook'; 
+import useHotkeysHandler from './useHotkeysHandler';
 
 const Mainpage = () => {
   const {
@@ -18,6 +18,7 @@ const Mainpage = () => {
     navigateToChannel,
     navigateToChannelNumber,
     navigateToChannelOnClick,
+    changeActiveComponent,
     channels,
     playerState, 
   } = useApp();
@@ -45,16 +46,14 @@ const Mainpage = () => {
     }
   }, [playerState.highlightedChannel, channels]);
 
-  const addDelay = (func, delay) => {
-    return () => setTimeout(func, delay);
-  };
-
-  // Use the useHotkeys hook to handle key events
-  useHotkeys('up', addDelay(navigateToPreviousChannel, 200));
-  useHotkeys('down', addDelay(navigateToNextChannel, 200));
-  useHotkeys('enter', navigateToChannel);
-  useHotkeys('pageup', addDelay(() => navigateToChannelNumber(-8), 200));
-  useHotkeys('pagedown', addDelay(() => navigateToChannelNumber(8), 200));
+  useHotkeysHandler({
+    playerState,
+    navigateToPreviousChannel,
+    navigateToNextChannel,
+    navigateToChannel,
+    navigateToChannelNumber,
+    changeActiveComponent
+  });
 
   const handleClick = (newIndex) => {
     console.log('click: ' + newIndex);
@@ -66,7 +65,8 @@ const Mainpage = () => {
       <div className="App-header">
         <span className="column">
           <p><img src={playerState.highlightedChannel && playerState.highlightedChannel.logo} style={{ maxHeight: 150, maxWidth: 150 }} alt=""/><br/>
-            {playerState.highlightedChannel && playerState.highlightedChannel.index} {playerState.highlightedChannel && playerState.highlightedChannel.title}</p>
+            {playerState.highlightedChannel && playerState.highlightedChannel.index} {playerState.highlightedChannel && playerState.highlightedChannel.title}<br/>
+            {playerState && playerState.activeComponent}</p>
         </span>
         <span className="column">
           {playerState.playingChannel && <Player prechannel={playerState.highlightedChannel} channel={playerState.playingChannel}/>}

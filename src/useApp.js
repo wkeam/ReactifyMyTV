@@ -48,7 +48,7 @@ export function useApp() {
     console.log('channels',channels);
     setEpg(epg);
     setChannels(channels);
-    setPlayerState({highlightedChannel:channels[0],playingChannel: channels[0]});
+    setPlayerState({highlightedChannel:channels[0],playingChannel: channels[0], activeComponent: 'livetv'});
     setIsLoading(false);
   }, []);
 
@@ -96,6 +96,13 @@ export function useApp() {
     setPlayerState(updatedPlayerState);
   }
 
+  const changeActiveComponent = (newComponent) => {
+    console.log('changeActiveComponent: ' + newComponent);
+    const updatedPlayerState = { ...playerState, activeComponent: newComponent };
+    console.log(updatedPlayerState);
+    setPlayerState(updatedPlayerState);
+  }
+
   React.useEffect(() => {
     handleFetchResources();
   }, [handleFetchResources]);
@@ -109,6 +116,7 @@ export function useApp() {
     navigateToChannel,
     navigateToChannelOnClick,
     navigateToChannelNumber,
+    changeActiveComponent,
     channels,
     epg,
     playerState
