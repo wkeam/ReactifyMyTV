@@ -42,6 +42,7 @@ import {
         dayWidth={dayWidth}
         sidebarWidth={sidebarWidth}
         isSidebar={isSidebar}
+        style={{zIndex: '90'}}
       >
         {time.map((_, index) => renderTime(index))}
       </TimelineWrapper>
