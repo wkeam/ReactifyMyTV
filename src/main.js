@@ -77,6 +77,15 @@ ipcMain.handle('get-data', async () => {
   }
 });
 
+ipcMain.handle('quitApp', async () => {
+  try{
+    app.quit();
+  } catch(error){
+    console.log('Cant quit??!!');
+    console.log(error);
+  }
+});
+
 function updateSettings(){
   const appPath = app.getAppPath();
 

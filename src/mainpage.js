@@ -7,6 +7,7 @@ import { Epg, Layout } from "planby";
 import { useApp } from "./useApp";
 import { Timeline, ChannelItem, ProgramItem } from "./components";
 import useHotkeysHandler from './useHotkeysHandler';
+import Sidebar from './cmp/Sidebar';
 
 const Mainpage = () => {
   const {
@@ -62,11 +63,12 @@ const Mainpage = () => {
 
   return (
     <div className="App"  tabIndex={0}>
+      {playerState.activeComponent && <Sidebar activeComponent={playerState.activeComponent} />}
       <div className="App-header">
         <span className="column">
           <p><img src={playerState.highlightedChannel && playerState.highlightedChannel.logo} style={{ maxHeight: 150, maxWidth: 150 }} alt=""/><br/>
             {playerState.highlightedChannel && playerState.highlightedChannel.index} {playerState.highlightedChannel && playerState.highlightedChannel.title}<br/>
-            {playerState && playerState.activeComponent}</p>
+          </p>
         </span>
         <span className="column">
           {playerState.playingChannel && <Player prechannel={playerState.highlightedChannel} channel={playerState.playingChannel}/>}
