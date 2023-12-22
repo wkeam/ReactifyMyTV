@@ -12,20 +12,18 @@ async function createWindow(settings) {
     const currentDate = new Date();
     // Create a Date object using the provided timestamp
     const dateFromTimestamp = new Date(settings.lastSync);
-    console.log('last synced: ' + dateFromTimestamp);
-    console.log('date now: ' + currentDate);
 
     const timeDifference = currentDate.getTime() - dateFromTimestamp.getTime();
     const daysDifference = timeDifference / (1000 * 60 * 60 * 24);
-    console.log('daysDifference: ' + daysDifference);
+    console.log('Days since last sync: ' + daysDifference);
     const intervalDays = 0.1;
 
     // Check if the specified interval has passed
     if (daysDifference >= intervalDays) {
-      console.log('updating playlist and epg');
+      console.log('Updating channels and EPG');
       await getPlaylistAndEpg();
     } else {
-      console.log('skipping updating playlist and epg');
+      console.log('Skipping channels and EPG update');
     }
 
     // Create the browser window.
@@ -43,6 +41,7 @@ async function createWindow(settings) {
     // win.setFullScreen(true);
     if (isDev) {
       win.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
+      win.webContents.openDevTools({ mode: 'detach' });
     } else {
       win.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
     }
@@ -53,7 +52,7 @@ async function createWindow(settings) {
 
     // Open the DevTools.
     // if (isDev) {
-    win.webContents.openDevTools({ mode: 'detach' });
+    
     // }
   } catch (error) {
     console.error('Error:', error);
@@ -65,8 +64,6 @@ ipcMain.handle('get-data', async () => {
     const userDataPath = app.getPath('userData');
     const channelsPath = path.join(userDataPath, 'appdata/channels.js');
     const epgPath = path.join(userDataPath, 'appdata/epg.js');
-    console.log(channelsPath);
-    console.log(epgPath);
 
     const channels = await fs.readFileSync(channelsPath, 'utf-8');
     const epg = await fs.readFileSync(epgPath, 'utf-8');
@@ -114,13 +111,11 @@ async function getSettings(filePath){
       return;
     }
     let savedSettings = JSON.parse(data);
-    console.log('savedSettings:', savedSettings);
     return savedSettings;
   });
 }
 
 async function getPlaylistAndEpg(){
-  console.log('updating epg');
   const parsedData = await fetchData();
   updateSettings();
 }
@@ -145,14 +140,12 @@ app.on('ready', () => {
   const settings = readJsonFile(filePath);
 
   // Now you can use the 'settings' variable in your application
-  console.log(settings);
   createWindow(settings);
 });
 
 function readSettings(filePath) {
   try {
       const data = fs.readFileSync(filePath, 'utf-8');
-      console.log('data',data);
       return JSON.parse(data);
   } catch (error) {
       console.error('Error reading settings file:', error.message);

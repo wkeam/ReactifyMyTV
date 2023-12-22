@@ -11,7 +11,7 @@ const parseStringPromise = promisify(parseString);
 
 async function fetchData() {
     
-        console.log('calling m3u8 parser');
+        console.log('Get EPG');
         const appPath = app.getAppPath();
         const onlineEpgs = [
           'https://i.mjh.nz/au/Sydney/epg.xml',
@@ -38,7 +38,7 @@ async function fetchData() {
             //const convertedJSON = combinedEpg.map(item => ({
             const fetchData = async () => {
               try {
-                console.log('start convertedJSON');
+                console.log('Parse EPG');
                 const convertedJSON = await Promise.all(combinedEpg.map(async (item) => {
                   let descString = '';
                   let titleString = '';
@@ -63,7 +63,7 @@ async function fetchData() {
                      
                   };
                 }));
-                console.log('end convertedJSON');
+                console.log('EPG Done');
                 // const filePathWrite = path.join(appPath, 'src/helpers/epg.js');
                 // fs.writeFileSync(filePathWrite, 'export const epg = ' + JSON.stringify(convertedJSON));
                 const userDataPath = app.getPath('userData');
@@ -88,7 +88,7 @@ async function fetchData() {
             await fetchData();
         // Return the parsed result
 
-        console.log('Fetching channels');
+        console.log('Get Channels');
         const onlinePlaylists = [
             'https://i.mjh.nz/au/Sydney/raw-tv.m3u8',
             'https://i.mjh.nz/PlutoTV/us.m3u8',
@@ -97,29 +97,28 @@ async function fetchData() {
         let combinedList = [];
       
             
-            for(const opl of onlinePlaylists){
-            const channelResponse = await axios.get(opl, {
-                headers: { 'Content-Type': 'application/xml; charset=utf-8' },
-            });
-            let parsedm3u8 = sortPlaylist(parseM3U8(channelResponse.data));
-            combinedList = [...combinedList, ...parsedm3u8];
+        for(const opl of onlinePlaylists){
+        const channelResponse = await axios.get(opl, {
+            headers: { 'Content-Type': 'application/xml; charset=utf-8' },
+        });
+        let parsedm3u8 = sortPlaylist(parseM3U8(channelResponse.data));
+        combinedList = [...combinedList, ...parsedm3u8];
 
-            }
+        }
+        console.log('Parse Channels');
+        const mappedJson = combinedList.map((item, index) => ({
+          uuid: item.channelID.replace(/^(pluto-|plex-)/, ''),
+          type: "channel",
+          title: item.channelName ? item.channelName : '',
+          country: '',
+          provider: '',
+          logo: item.tvgLogo,
+          year: 2023,
+          channelURL: item.channelURL,
+          index: index,
+        }));
+        console.log('Channels Done');
 
-            const mappedJson = combinedList.map((item, index) => ({
-              uuid: item.channelID.replace(/^(pluto-|plex-)/, ''),
-              type: "channel",
-              title: item.channelName ? item.channelName : '',
-              country: '',
-              provider: '', //item.tvgChNo,
-              logo: item.tvgLogo,
-              year: 2023, // You can replace this with the actual value if available
-              channelURL: item.channelURL,
-              index: index, // Shorthand for index: index
-            }));
-
-        // const filePathWrite = path.join(appPath, 'src/helpers/channels.js');
-        // fs.writeFileSync(filePathWrite, 'export const channels = ' + JSON.stringify(mappedJson));
         const userDataPath = app.getPath('userData');
         const filePathWrite = path.join(userDataPath, 'appdata/channels.js');
         

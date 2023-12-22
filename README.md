@@ -25,14 +25,17 @@ ReactifyMyTV includes channels from various sources, providing a diverse range o
 
 ## Controls
 **Mouse**
-- Click a channel icon to change channel.
+- Click a channel to change channel.
 - Mouse wheel to scroll the EPG or use the scrollbar handles.
 - Double click video to enter/exit fullscreen.
 
 **Keyboard**
 - Arrow Up/Arrow Down browse the EPG.
 - Enter to change channel.
-- Page Up/Page Down scroll the EPG several lines
+- Page Up/Page Down scroll the EPG several lines.
+- Left to open/collapse the sidebar menu.
+- Up/Down to navigate sidebar.
+- Enter to select sidebar menu item.
 
 ## Getting Started
 

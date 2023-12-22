@@ -1,20 +1,43 @@
-import React from 'react';
-const { invoke } = window.electron;
+import React, { useState, useEffect } from 'react';
 
-function Sidebar({ activeComponent, onMenuItemClick }) {
+function Sidebar({ activeComponent }) {
   const isOpen = activeComponent === 'sidebar';
+  const [selectedItem, setSelectedItem] = useState(0);
 
   const handleItemClick = (menuItem) => {
     console.log(menuItem);
-    if(menuItem === 'Exit'){
-      window.electron.invoke('quitApp');
+    if (menuItem === 'Exit') {
+      window.electron.invoke('quitApp'); // Uncomment this line if needed
     }
   };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'ArrowUp') {
+      setSelectedItem((prev) => (prev > 0 ? prev - 1 : menuItems.length - 1));
+    } else if (e.key === 'ArrowDown') {
+      setSelectedItem((prev) => (prev < menuItems.length - 1 ? prev + 1 : 0));
+    } else if (e.key === 'Enter') {
+      const selectedLabel = menuItems[selectedItem].label;
+      console.log('Selected:', selectedLabel);
+      handleItemClick(selectedLabel);
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    } else {
+      window.removeEventListener('keydown', handleKeyDown);
+    }
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, selectedItem]);
 
   const sidebarStyles = {
     backgroundColor: 'rgba(0,0,0,0.94)',
     height: '80vh',
-    width: '400px',
+    width: '300px',
     position: 'fixed',
     zIndex: '100',
     transition: 'transform 0.6s ease-in-out',
@@ -28,17 +51,21 @@ function Sidebar({ activeComponent, onMenuItemClick }) {
   };
 
   const menuItems = [
-    { icon: '⚙️', text: 'Does Nothing Yet' },
-    { icon: '🚪', text: 'Exit' },
+    { index: 0, icon: '📡', label: 'Live TV (TBA)' },
+    { index: 1, icon: '📺', label: 'TV Episodes (TBA)' },
+    { index: 2, icon: '🎬', label: 'Movies (TBA)' },
+    { index: 3, icon: '⚙️', label: 'Settings (TBA)' },
+    { index: 4, icon: '🚪', label: 'Exit' },
   ];
 
-  const menuItemStyles = {
+  const menuItemStyles = (index) => ({
     display: 'flex',
     alignItems: 'center',
     marginBottom: '15px',
     cursor: 'pointer',
-    transition: 'background-color 1.0s',
-  };
+    transition: 'background-color 0.3s',
+    backgroundColor: index === selectedItem ? 'gray' : 'transparent',
+  });
 
   const iconStyles = {
     marginRight: '10px',
@@ -50,11 +77,11 @@ function Sidebar({ activeComponent, onMenuItemClick }) {
       {menuItems.map((item, index) => (
         <div
           key={index}
-          style={menuItemStyles}
-          onClick={() => handleItemClick(item.text)}
+          style={menuItemStyles(index)}
+          onClick={() => handleItemClick(item.label)}
         >
           <span style={iconStyles}>{item.icon}</span>
-          {item.text}
+          {item.label}
         </div>
       ))}
     </div>

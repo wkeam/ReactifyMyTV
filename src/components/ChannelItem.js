@@ -18,7 +18,7 @@ export const ChannelItem = ({ channel, selectedChannel, highlightedChannel }) =>
     <ChannelBox
       {...position}
     >
-      {channel && channel.index}
+      {channel && channel.index+1}
       <ChannelLogo 
         src={logo}
         alt="Logo"
