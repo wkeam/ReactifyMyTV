@@ -4,9 +4,10 @@ import Modal from './Modal';
 import React, { useState, useEffect } from 'react';
 import screenfull from 'screenfull';
 
-function Player({ channel, prechannel }){
+function Player({ channel, prechannel ,updateIsFullscreen }){
 
 const [isModalVisible, setModalVisibility] = useState(false);
+const [isFullscreen, setIsFullscreen] = useState(false);
 const handleClick = (e) => {
 	switch (e.detail) {
 		case 2:
@@ -37,11 +38,23 @@ useEffect(() => {
 }, [channel, prechannel]);
 
 const toggleFullscreen = () => {
-	screenfull.toggle(document.querySelector('.react-player'));
-			screenfull.isFullscreen 
-			? (document.querySelector('.react-player').style.cursor = 'default') 
-			: (document.querySelector('.react-player').style.cursor = 'none');
-}
+	const reactPlayer = document.querySelector('.react-player');
+	screenfull.toggle(reactPlayer);
+	const fullscreenChangeHandler = () => {
+	  console.log(screenfull.isFullscreen);
+	  if (screenfull.isFullscreen) {
+		setIsFullscreen(true);
+		updateIsFullscreen(true);
+		reactPlayer.style.cursor = 'none';
+	  } else {
+		setIsFullscreen(false);
+		updateIsFullscreen(false);
+		reactPlayer.style.cursor = 'default';
+	  }
+	  screenfull.off('change', fullscreenChangeHandler);
+	};
+	screenfull.on('change', fullscreenChangeHandler);
+};
 
 const handleKeystroke = (event) => {
 	switch (event.key) {
@@ -65,7 +78,8 @@ const playerConfig = {
 
 return (
 	<span className='react-player player-wrapper'>
-	{ isModalVisible && screenfull.isFullscreen && <Modal channel={channel} prechannel={prechannel}/> }
+		<div style={{color:'red'}}>{String(isFullscreen)}</div>
+	{ isModalVisible && isFullscreen && <Modal channel={channel} prechannel={prechannel}/> }
 	{channel &&
 	<ReactPlayer  style={{outline: 'none'}}
 		onClick={handleClick}
@@ -79,14 +93,6 @@ return (
 		width='100%'
 		height='100%' />
 	}
-		{/* <div style={{
-			zIndex: '2147483647',
-			position: 'absolute',
-			left: '10vw',
-			top: '10vh',
-			fontSize: '4vh'
-		}}>
-		</div> */}
 	</span>
 	
 	)

@@ -7,7 +7,10 @@ import { Timeline, ChannelItem, ProgramItem } from "./components";
 import useHotkeysHandler from './useHotkeysHandler';
 import './App.css';
 
-const Livetv = ({ playerState, isLoading, getEpgProps, getLayoutProps, handleClick, channels, navigateToPreviousChannel, navigateToNextChannel, navigateToChannel, navigateToChannelNumber, changeActiveComponent }) => {  const layoutRef = useRef(null);
+const Livetv = ({ playerState, isLoading, getEpgProps, getLayoutProps, handleClick, channels, navigateToPreviousChannel, 
+                  navigateToNextChannel, navigateToChannel, navigateToChannelNumber, changeActiveComponent,
+                  updateIsFullscreen
+}) => {  const layoutRef = useRef(null);
 
   useEffect(() => {
     const channelIndex = channels.findIndex(c => c.index === playerState.highlightedChannel.index);
@@ -47,7 +50,12 @@ const Livetv = ({ playerState, isLoading, getEpgProps, getLayoutProps, handleCli
           </p>
         </span>
         <span className="column">
-          {playerState.playingChannel && <Player prechannel={playerState.highlightedChannel} channel={playerState.playingChannel} />}
+          {playerState.playingChannel && 
+            <Player prechannel={playerState.highlightedChannel} 
+                    channel={playerState.playingChannel}
+                    updateIsFullscreen={updateIsFullscreen}
+            />
+          }
         </span>
       </div>
       <div className="App-footer-container">

@@ -9,7 +9,7 @@ import { theme } from "./helpers/theme";
 
 export function useApp() {
   const [channels, setChannels] = React.useState([]);
-  const initialState = {highlightedChannel: channels[0],playingChannel: channels[0]};
+  const initialState = {highlightedChannel: channels[0],playingChannel: channels[0],isFullscreen:false};
   const [epg, setEpg] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
   const [playerState, setPlayerState] = React.useState(initialState);
@@ -45,10 +45,9 @@ export function useApp() {
   const handleFetchResources = React.useCallback(async () => {
     setIsLoading(true);
     const { channels, epg } = await invoke('get-data');
-    console.log('channels',channels);
     setEpg(epg);
     setChannels(channels);
-    setPlayerState({highlightedChannel:channels[0],playingChannel: channels[0], activeComponent: 'livetv'});
+    setPlayerState({highlightedChannel:channels[0],playingChannel: channels[0], activeComponent: 'livetv',isFullscreen:false});
     setIsLoading(false);
   }, []);
 
@@ -63,7 +62,6 @@ export function useApp() {
 
   const navigateToNextChannel = () => {
     let newIndex = playerState.highlightedChannel.index + 1;
-    console.log(newIndex + '/' + channelsData.length);
     if(newIndex>channelsData.length-1){
       newIndex = 0;
     }
@@ -78,7 +76,6 @@ export function useApp() {
   }
 
   const navigateToChannelNumber = (number) => {
-    console.log(playerState);
     let newIndex =  playerState.highlightedChannel.index + number;
     if(newIndex<0){
       newIndex = channelsData.length-1;
@@ -90,18 +87,19 @@ export function useApp() {
   }
 
   const navigateToChannelOnClick = (newIndex) => {
-    console.log('navigateToChannelOnClick: ' + newIndex);
     const updatedPlayerState = { ...playerState, highlightedChannel: channelsData[newIndex], playingChannel: channelsData[newIndex] };
-    console.log(updatedPlayerState);
     setPlayerState(updatedPlayerState);
   }
 
   const changeActiveComponent = (newComponent) => {
-    console.log('changeActiveComponent: ' + newComponent);
     const updatedPlayerState = { ...playerState, activeComponent: newComponent };
-    console.log(updatedPlayerState);
     setPlayerState(updatedPlayerState);
   }
+
+  const updateIsFullscreen = (isFullscreen) => {
+    const updatedPlayerState = { ...playerState, isFullscreen: isFullscreen };
+    setPlayerState(updatedPlayerState);
+  };
 
   React.useEffect(() => {
     handleFetchResources();
@@ -119,6 +117,7 @@ export function useApp() {
     changeActiveComponent,
     channels,
     epg,
-    playerState
+    playerState,
+    updateIsFullscreen
   };
 }

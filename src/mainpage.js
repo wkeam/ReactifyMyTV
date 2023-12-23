@@ -19,6 +19,7 @@ const Mainpage = () => {
     changeActiveComponent,
     channels,
     playerState,
+    updateIsFullscreen
   } = useApp();
 
   const handleClick = (newIndex) => {
@@ -46,6 +47,7 @@ const Mainpage = () => {
         navigateToChannel={navigateToChannel}
         navigateToChannelNumber={navigateToChannelNumber}
         changeActiveComponent={changeActiveComponent}
+        updateIsFullscreen={updateIsFullscreen}
       />}
     </>
   );
