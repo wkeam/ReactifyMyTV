@@ -13,7 +13,7 @@ const useHotkeysHandler = ({
         return () => setTimeout(func, delay);
     };
     const handleLeftKey = () => {
-        if (playerState.activeComponent === 'livetv') {
+        if (playerState.activeComponent === 'livetv' && !playerState.isFullscreen) {
             changeActiveComponent('sidebar');
         } else if (playerState.activeComponent === 'sidebar') {
             changeActiveComponent('livetv');

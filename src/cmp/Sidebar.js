@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
-function Sidebar({ activeComponent }) {
-  const isOpen = activeComponent === 'sidebar';
+function Sidebar({ playerState }) {
+  const isOpen = playerState.activeComponent === 'sidebar';
   const [selectedItem, setSelectedItem] = useState(0);
 
   const handleItemClick = (menuItem) => {
     console.log(menuItem);
     if (menuItem === 'Exit') {
-      window.electron.invoke('quitApp'); // Uncomment this line if needed
+      window.electron.invoke('quitApp');
     }
   };
 
@@ -24,7 +24,7 @@ function Sidebar({ activeComponent }) {
   };
 
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && !playerState.isFullscreen) {
       window.addEventListener('keydown', handleKeyDown);
     } else {
       window.removeEventListener('keydown', handleKeyDown);

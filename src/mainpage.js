@@ -31,7 +31,7 @@ const Mainpage = () => {
     <>
       {(playerState && playerState.activeComponent) &&
       <Sidebar 
-        activeComponent={playerState.activeComponent}
+        playerState={playerState}
         changeActiveComponent={changeActiveComponent}
       />}
       {(playerState && channels) &&
