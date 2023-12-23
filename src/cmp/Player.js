@@ -78,7 +78,6 @@ const playerConfig = {
 
 return (
 	<span className='react-player player-wrapper'>
-		<div style={{color:'red'}}>{String(isFullscreen)}</div>
 	{ isModalVisible && isFullscreen && <Modal channel={channel} prechannel={prechannel}/> }
 	{channel &&
 	<ReactPlayer  style={{outline: 'none'}}
