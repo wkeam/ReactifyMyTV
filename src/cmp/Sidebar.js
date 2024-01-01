@@ -1,4 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import SatelliteAltIcon from '@mui/icons-material/SatelliteAlt';
+import LiveTvIcon from '@mui/icons-material/LiveTv';
+import TheatersIcon from '@mui/icons-material/Theaters';
+import SettingsIcon from '@mui/icons-material/Settings';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 function Sidebar({ playerState }) {
   const isOpen = playerState.activeComponent === 'sidebar';
@@ -51,11 +56,11 @@ function Sidebar({ playerState }) {
   };
 
   const menuItems = [
-    { index: 0, icon: '📡', label: 'Live TV (TBA)' },
-    { index: 1, icon: '📺', label: 'TV Episodes (TBA)' },
-    { index: 2, icon: '🎬', label: 'Movies (TBA)' },
-    { index: 3, icon: '⚙️', label: 'Settings (TBA)' },
-    { index: 4, icon: '🚪', label: 'Exit' },
+    { index: 0, icon: <SatelliteAltIcon/>, label: 'Live TV (TBA)' },
+    { index: 1, icon: <LiveTvIcon/>, label: 'TV Episodes (TBA)' },
+    { index: 2, icon: <TheatersIcon/>, label: 'Movies (TBA)' },
+    { index: 3, icon: <SettingsIcon/>, label: 'Settings (TBA)' },
+    { index: 4, icon: <ExitToAppIcon/>, label: 'Exit' },
   ];
 
   const menuItemStyles = (index) => ({

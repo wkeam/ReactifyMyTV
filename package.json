@@ -36,6 +36,10 @@
     "style-loader": "^3.3.3"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.15.2",
+    "@mui/material": "^5.15.2",
     "axios": "^1.6.2",
     "electron-is-dev": "^2.0.0",
     "electron-squirrel-startup": "^1.0.0",
