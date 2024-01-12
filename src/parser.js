@@ -16,6 +16,7 @@ async function fetchData() {
         const onlineEpgs = [
           'https://i.mjh.nz/au/Sydney/epg.xml',
           // 'https://i.mjh.nz/PlutoTV/us.xml',
+          'https://i.mjh.nz/SamsungTVPlus/us.xml',
           'https://i.mjh.nz/Plex/au.xml'
         ];
 
@@ -92,6 +93,7 @@ async function fetchData() {
         const onlinePlaylists = [
             'https://i.mjh.nz/au/Sydney/raw-tv.m3u8',
             // 'https://i.mjh.nz/PlutoTV/us.m3u8',
+            'https://i.mjh.nz/SamsungTVPlus/us.m3u8',
             'https://i.mjh.nz/Plex/au.m3u8'
         ];
         let combinedList = [];
@@ -107,7 +109,7 @@ async function fetchData() {
         }
         console.log('Parse Channels');
         const mappedJson = combinedList.map((item, index) => ({
-          uuid: item.channelID.replace(/^(pluto-|plex-)/, ''),
+          uuid: item.channelID.replace(/^(pluto-|plex-|samsung-)/, ''),
           type: "channel",
           title: item.channelName ? item.channelName : '',
           country: '',
