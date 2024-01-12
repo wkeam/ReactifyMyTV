@@ -15,7 +15,7 @@ async function fetchData() {
         const appPath = app.getAppPath();
         const onlineEpgs = [
           'https://i.mjh.nz/au/Sydney/epg.xml',
-          'https://i.mjh.nz/PlutoTV/us.xml',
+          // 'https://i.mjh.nz/PlutoTV/us.xml',
           'https://i.mjh.nz/Plex/au.xml'
         ];
 
@@ -91,7 +91,7 @@ async function fetchData() {
         console.log('Get Channels');
         const onlinePlaylists = [
             'https://i.mjh.nz/au/Sydney/raw-tv.m3u8',
-            'https://i.mjh.nz/PlutoTV/us.m3u8',
+            // 'https://i.mjh.nz/PlutoTV/us.m3u8',
             'https://i.mjh.nz/Plex/au.m3u8'
         ];
         let combinedList = [];
