@@ -26,7 +26,7 @@ export const ChannelItem = ({ channel, selectedChannel, highlightedChannel }) =>
       />
       <div style={{ 
         height: '80px',
-        width: 'calc(100vw - 20px)',
+        width: 'calc(100vw - 25px)',
         backgroundColor: isHighlighted || isSelected ? 'rgba(214,	226,	231, 0.05)' : 'transparent',
         position: 'absolute',
         left: '0px',
