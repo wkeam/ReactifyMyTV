@@ -15,9 +15,10 @@ async function fetchData() {
         const appPath = app.getAppPath();
         const onlineEpgs = [
           'https://i.mjh.nz/au/Sydney/epg.xml',
-          // 'https://i.mjh.nz/PlutoTV/us.xml',
+          'https://i.mjh.nz/PlutoTV/us.xml',
           'https://i.mjh.nz/SamsungTVPlus/us.xml',
-          'https://i.mjh.nz/Plex/au.xml'
+          'https://i.mjh.nz/Plex/au.xml',
+          'https://i.mjh.nz/Roku/epg.xml'
         ];
 
         let combinedEpg = [];
@@ -92,9 +93,10 @@ async function fetchData() {
         console.log('Get Channels');
         const onlinePlaylists = [
             'https://i.mjh.nz/au/Sydney/raw-tv.m3u8',
-            // 'https://i.mjh.nz/PlutoTV/us.m3u8',
+            'https://i.mjh.nz/PlutoTV/us.m3u8',
             'https://i.mjh.nz/SamsungTVPlus/us.m3u8',
-            'https://i.mjh.nz/Plex/au.m3u8'
+            'https://i.mjh.nz/Plex/au.m3u8',
+            'https://i.mjh.nz/Roku/all.m3u8'
         ];
         let combinedList = [];
       
@@ -188,9 +190,9 @@ const parseM3U8 = (content) => {
           channelName,
         };
       } else {
-        const pattern = /#EXTINF:-1\s*channel-id="([^"]*)"\s*tvg-id="([^"]*)"\s*tvg-logo="([^"]*)"\s*tvg-chno="(\d+)"\s*group-title="([^"]*)"\s*,\s*(.*)$/;
+        const pattern2 = /#EXTINF:-1\s*channel-id="([^"]*)"\s*tvg-id="([^"]*)"\s*tvg-logo="([^"]*)"\s*tvg-chno="(\d+)"\s*group-title="([^"]*)"\s*,\s*(.*)$/;
 
-        const match2 = line.match(pattern);
+        const match2 = line.match(pattern2);
         if (match2) {
           const [, channelID, tvgID, tvgLogo, tvgChNo, groupTitle, channelName] = match2;
           currentPlaylist = {
@@ -203,8 +205,8 @@ const parseM3U8 = (content) => {
           }
         } else {
 
-          const pattern2 = /#EXTINF:-1\s+channel-id="([^"]+)"\s+tvg-id="([^"]+)"\s+tvg-logo="([^"]+)"\s*,\s+([^,]+)/;
-          const match3 = line.match(pattern2);
+          const pattern3 = /#EXTINF:-1\s+channel-id="([^"]+)"\s+tvg-id="([^"]+)"\s+tvg-logo="([^"]+)"\s*,\s+([^,]+)/;
+          const match3 = line.match(pattern3);
           if (match3) {
             const [, channelID, tvgID, tvgLogo, channelName] = match3;
             currentPlaylist = {
@@ -215,7 +217,20 @@ const parseM3U8 = (content) => {
             }
             
           } else {
-            console.log('no match: ' + line);
+            //const pattern4 = /#EXTINF:-1\s+channel-id="([^"]+)"\s+tvg-id="([^"]+)"\s+tvg-logo="([^"]+)"\s*,\s+([^,]+)/;
+            const pattern4 = /#EXTINF:-1\s+channel-id="([^"]+)"\s+tvg-logo="([^"]+)"\s+tvg-chno="([^"]+)"\s*,\s+([^,]+)/;
+            const match4 = line.match(pattern4);
+            if (match4) {
+              const [, channelID, tvgLogo, tvgChno, channelName] = match4; // Updated to capture tvgLogo instead of tvgID
+              currentPlaylist = {
+                channelID,
+                tvgLogo,
+                tvgChno,
+                channelName,
+              };
+            } else {
+              console.log('no match: ' + line);
+            }
           }
         }
       }
