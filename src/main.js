@@ -46,7 +46,7 @@ async function createWindow(settings) {
       win.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
     }
 
-    
+    win.maximize();
 
     win.removeMenu();
 
