@@ -4,7 +4,7 @@ import Modal from './Modal';
 import React, { useState, useEffect } from 'react';
 import screenfull from 'screenfull';
 
-function Player({ channel, prechannel ,updateIsFullscreen }){
+function Player({ volume, channel, prechannel ,updateIsFullscreen }){
 
 const [isModalVisible, setModalVisibility] = useState(false);
 const [isFullscreen, setIsFullscreen] = useState(false);
@@ -42,15 +42,18 @@ const toggleFullscreen = () => {
 	screenfull.toggle(reactPlayer);
 	const fullscreenChangeHandler = () => {
 	  console.log(screenfull.isFullscreen);
-	  if (screenfull.isFullscreen) {
-		setIsFullscreen(true);
-		updateIsFullscreen(true);
-		reactPlayer.style.cursor = 'none';
-	  } else {
-		setIsFullscreen(false);
-		updateIsFullscreen(false);
-		reactPlayer.style.cursor = 'default';
+	  if(updateIsFullscreen==true||false){
+		if (screenfull.isFullscreen) {
+			setIsFullscreen(true);
+			updateIsFullscreen(true);
+			reactPlayer.style.cursor = 'none';
+		  } else {
+			setIsFullscreen(false);
+			updateIsFullscreen(false);
+			reactPlayer.style.cursor = 'default';
+		  }
 	  }
+	  
 	  screenfull.off('change', fullscreenChangeHandler);
 	};
 	screenfull.on('change', fullscreenChangeHandler);
@@ -90,7 +93,8 @@ return (
 		config={playerConfig}
 		controls={false}
 		width='100%'
-		height='100%' />
+		height='100%'
+		volume={volume} />
 	}
 	</span>
 	

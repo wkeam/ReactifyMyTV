@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title></title>
+    <style>
+        body {
+        margin: 0px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 100vw;
+        border: 10px double #a8a2c6;
+        border-radius: 10px;
+        box-sizing: border-box;
+        background: #556d79;
+        -webkit-background-clip: padding-box;
+        font-family: Arial, Helvetica, sans-serif;
+        }
+        .custom-loader {
+        width:200px;
+        height:calc(200px*0.866);
+        display: grid;
+        background:
+            linear-gradient(to bottom left ,#0000 calc(50% - 2px),#766DF4 0 calc(50% + 2px),#0000 0) right/50% 100%,
+            linear-gradient(to bottom right,#0000 calc(50% - 2px),#766DF4 0 calc(50% + 2px),#0000 0) left /50% 100%,
+            linear-gradient(#766DF4 0 0) bottom/100% 4px;
+        background-repeat: no-repeat;
+        transform-origin: 50% 66%;
+        animation: h5 16s infinite linear;
+        }
+
+        .custom-loader::before,
+        .custom-loader::after {
+        content: "";
+        grid-area: 1/1;
+        background:inherit;
+        transform-origin: inherit;
+        animation: inherit;
+        }
+        .custom-loader::after {
+        animation-duration: 15s;
+        }
+
+        @keyframes h5{
+        100% {transform:rotate(1turn)}
+        }
+        .loading-text {
+        font-size: 48px;
+        font-weight: bold;
+        color: #333;
+        margin-top: 20px;
+        text-align: center;
+        position: relative;
+        top: 50px;
+        animation: pulse 1s ease-in-out infinite alternate;
+      }
+
+      @keyframes pulse {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0.5;
+        }
+      }
+
+    </style>
+  </head>
+
+    <div class="loading-container">
+      <div class="custom-loader"></div>
+      <div class="loading-text">Loading...</div>
+    </div>
+</html>

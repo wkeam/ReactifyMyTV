@@ -6,6 +6,38 @@ const fs = require('fs');
 const util = require('util');
 const userDataPath = app.getPath('userData');
 
+let splash;
+
+function createSplashWindow() {
+  splash = new BrowserWindow({
+    width: 600,
+    height: 400,
+    alwaysOnTop: true,
+    transparent:false,
+    frame: false,
+    webPreferences: {
+      nodeIntegration: true
+    }
+  });
+
+  if(isDev){
+    const splashPath = path.join(__dirname, '../../src/public', 'splash.html');
+    console.log(splashPath);
+    splash.loadFile(splashPath);
+  } else {
+    const splashPath = path.join(__dirname, '../renderer/public', 'splash.html');
+    console.log(splashPath);
+    splash.loadFile(splashPath);
+
+  }
+  
+  
+  splash.removeMenu();
+  splash.on('closed', () => {
+    splash = null;
+  });
+}
+
 async function createWindow(settings) {
   try {
 
@@ -45,7 +77,7 @@ async function createWindow(settings) {
     } else {
       win.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
     }
-
+    splash.close();
     win.maximize();
 
     win.removeMenu();
@@ -121,6 +153,7 @@ async function getPlaylistAndEpg(){
 }
 
 app.on('ready', () => {
+  createSplashWindow();
   const filePath = path.join(userDataPath, 'appdata/syncsettings.json');
 
   // Function to read and parse JSON from a file

@@ -66,7 +66,14 @@ const useHotkeysHandler = ({
     };     
     useHotkeys('pagedown', addDelay(() => handlePageDownKey(8), 200));
     
-    
+    const handleKey = (key) => {
+        switch(key){
+            case 'ArrowRight':
+                break;
+        }
+         
+    };
+    useHotkeys('*', (event) => handleKey(event.key));
     
 };
 export default useHotkeysHandler;

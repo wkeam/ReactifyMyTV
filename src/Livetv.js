@@ -25,8 +25,7 @@ const Livetv = ({ playerState, isLoading, getEpgProps, getLayoutProps, handleCli
     if (layoutRef.current && channelIndex !== -1 && channelHeight) {
       const containerHeight = layoutRef.current.clientHeight;
       const scrollPositionY = channelIndex * channelHeight - (containerHeight / 2) + (channelHeight / 2) + 40;
-
-      const scrollPositionX = (currentHour * hourWidth) + (currentMinute * minuteWidth) - (layoutRef.current.clientWidth / 2);
+      const scrollPositionX = ((currentHour * hourWidth) - hourWidth );
       
       layoutRef.current.scrollTo({ top: scrollPositionY, left: scrollPositionX, behavior: 'smooth' });
     }
@@ -45,8 +44,8 @@ const Livetv = ({ playerState, isLoading, getEpgProps, getLayoutProps, handleCli
     <div className="App" tabIndex={0}>
       <div className="App-header">
         <span className="column">
-          <p><img src={playerState.highlightedChannel && playerState.highlightedChannel.logo} style={{ maxHeight: 150, maxWidth: 150 }} alt="" /><br />
-            {playerState.highlightedChannel && playerState.highlightedChannel.index + 1} {playerState.highlightedChannel && playerState.highlightedChannel.title}<br />
+          <p><img src={playerState.playingChannel && playerState.playingChannel.logo} style={{ maxHeight: 150, maxWidth: 150 }} alt="" /><br />
+            {playerState.playingChannel && playerState.playingChannel.index + 1} {playerState.playingChannel && playerState.playingChannel.title}<br />
           </p>
         </span>
         <span className="column">
@@ -56,6 +55,22 @@ const Livetv = ({ playerState, isLoading, getEpgProps, getLayoutProps, handleCli
                     updateIsFullscreen={updateIsFullscreen}
             />
           }
+        </span>
+        <span className="column">
+        {playerState && (playerState.playingChannel != playerState.highlightedChannel) &&
+          <p><img src={playerState.highlightedChannel && playerState.highlightedChannel.logo} style={{ maxHeight: 150, maxWidth: 150 }} alt="" /><br />
+            {playerState.highlightedChannel && playerState.highlightedChannel.index + 1} {playerState.highlightedChannel && playerState.highlightedChannel.title}<br />
+          </p>
+        }
+        </span>
+        <span className="column">
+        {playerState && (playerState.playingChannel != playerState.highlightedChannel) &&
+          <Player prechannel={playerState.highlightedChannel} 
+                    channel={playerState.highlightedChannel}
+                    updateIsFullscreen={'disabled'}
+                    volume={0}
+            />
+        }
         </span>
       </div>
       <div className="App-footer-container">
